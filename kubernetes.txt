@@ -1,0 +1,136 @@
+worker components
+========================
+container runtime:
+
+kubelet: This is a process that interacts with both container run time and the node,
+It starts a pod with a container inside
+
+kubeproxy: This will forward the requests from services to pod
+It has intelligence to forward request to the correct replica
+eg if an application wants to communicate with a db pod then 
+kubeproxy will forward it to the db replica running closely
+
+Master components
+=========================
+apiserver:users interact with tha api server using some client like  ui,command line tool like kubelet
+apiserver is a cluster gateway which gets the initial request of any updates
+into the cluster or queries from the cluster and it also acts a a gate keeper for authentication ie it ensures only authorised requests gets through to the cluster
+If we want ot schedule a pod or deployment it is the apiserver which validates our request and then submits it to other processes
+apiservers also tells us about the health status of the deployment that we have done
+
+
+scheduler: aiserver handles the request from user to scheduler
+ to start the application pod on one of the worker nodes
+instead of scheduling a pod on any random worker node scheduler has the
+intelligence to check on which node a pod should run.
+scheduler checks how much resources are required for
+our pod like cpu memory and then it check the worker 
+nodes for the availability of resources
+It just decides on which node a pod should run
+
+kubelet is the actual services that performs the activity of
+taking info from the scheduler and ensure that it runs on a 
+specific slave
+
+controller manager checks if the desired stATE is maintained
+if a pod dies it recreats that pod
+
+etcd: Here cluster state is stored in key value pairs
+it stores info about the slaves and also the resources available on each salve
+and the pods running there
+scheduler pick the info of deciding where to run on pod based on the data
+coming from etcd
+etcd does not store the actual application data
+ie if wh have a db running etcd does not store that data
+
+
+
+docker engine components
+------------------------
+docker api
+docker server(container runtime,volums part,network interface,image)
+docker cli
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+==================================================================
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  ports:
+  - port: 80
+    name: web
+  clusterIP: None
+  selector:
+    app: nginx
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: web
+spec:
+  serviceName: "nginx"
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: k8s.gcr.io/nginx-slim:0.8
+        ports:
+        - containerPort: 80
+          name: web
+        volumeMounts:
+        - name: www
+          mountPath: /usr/share/nginx/html
+  volumeClaimTemplates:
+  - metadata:
+      name: www
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+
+...
+
+
+
+
+
+Ingress object
+
+
+
+
+
+
+
+
+
+
+
+
+
+
