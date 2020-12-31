@@ -1,0 +1,30 @@
+Name:
+DOB:
+Client:
+Company:
+Payroll Company:
+Father's Name:
+Mother's Name:
+No of Siblings:
+PAN No:
+Adhar No:
+Phone No:
+Passport Status:
+Total Work Experience:
+Devops Work Experience:
+Current CTC:
+Expected CTC:
+Notice Period:
+Education:
+  School:
+  10+2 College:
+  Graduation:
+  PG:
+
+Permanant Address:
+
+
+
+
+
+
